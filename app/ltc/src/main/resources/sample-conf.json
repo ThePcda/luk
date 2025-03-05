@@ -1,0 +1,26 @@
+{
+    "ws_obis": {
+        "clean-dir": [
+            "work"
+        ]
+    },
+    "ws_KVP": {
+        "liferay-home-name": "portal-7.4-ga86",
+        "tomcat-home-name": "tomcat-9.0.75",
+        "clean-dir": [
+            "work", "osgi-state"
+        ]
+    },
+    "ws_emas": {
+        "tomcat-home-name": "tomcat-9.0.68",
+        "clean-dir": [
+            "work", "osgi-state", "tomcat-temp"
+        ]
+    },
+    "ws_projektportal": {
+        "liferay-home-name": "liferay-7.4.3.125-ga125",
+        "clean-dir": [
+            "work", "osgi-state", "tomcat-temp", "tomcat-work"
+        ]
+    }
+}

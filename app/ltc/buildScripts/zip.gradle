@@ -1,0 +1,28 @@
+apply from: './app_conf.gradle'
+
+task zipArchive(type: Zip) {
+    def baseDir = "${conf.app_name}-${conf.app_version}"
+    archiveFileName = "${baseDir}.zip"
+
+    into("${baseDir}/bin") {
+        from('src/main/resources') {
+            include 'ltc.bat'
+        }
+    }
+
+    into("${baseDir}/libs") {
+        from(shadowJar)
+    }
+
+    into("${baseDir}/config") {
+        from('src/main/resources') {
+            include 'conf.json'
+            include 'sample-conf.json'
+        }
+    }
+
+    from('src/main/resources') {
+        include 'README.md'
+        into("${baseDir}")
+    }
+}

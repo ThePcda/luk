@@ -1,0 +1,36 @@
+//(C) Adrian Suslik (klauen ist ehrenlos, aber als Polacke kann ich das verstehen)
+rootProject.name = 'luk'
+
+def appDirectoryName = 'app'
+def appDirectory = file(appDirectoryName)
+def modulesDirectory = file('modules')
+
+if (appDirectory.exists() && appDirectory.isDirectory()) {
+    def appSingleDirectories = appDirectory.listFiles().findAll { it.isDirectory() && !it.name.startsWith('.') }
+    appSingleDirectories.each { appSingleDirectory ->
+        def appSingleDirectoryName = appSingleDirectory.name
+        def appSingleDirectoryPath = "$appDirectoryName:$appSingleDirectoryName"
+        include appSingleDirectoryPath
+        println green(appSingleDirectoryPath) + " was " + lightBlue("included")
+    }
+}
+
+String red(String text) {
+    return "\033[31m${text}\033[0m"
+}
+
+String green(String text) {
+    return "\033[32m${text}\033[0m"
+}
+
+String yellow(String text) {
+    return "\033[33m${text}\033[0m"
+}
+
+String lightBlue(String text) {
+    return "\033[96m${text}\033[0m"
+}
+
+String extractFileName(String path) {
+    return path.substring(path.lastIndexOf('/') + 1)
+}

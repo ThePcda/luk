@@ -1,0 +1,6 @@
+//(C) Adrian Suslik (klauen ist ehrenlos, aber als Polacke kann ich das verstehen)
+ext.conf = [
+    app_name: 'ltc',
+    app_version: '1.0.0',
+    main_class: 'com.pcda.luk.ltc.main.Main'
+]

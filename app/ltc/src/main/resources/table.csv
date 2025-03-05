@@ -1,0 +1,31 @@
+Name,Type,Required,Default-Value,Description
+"-l</br>
+--location",String <location>,true,none,"Der Pfad zum Workspace.</br>
+Ein '.' kann gesetzt werden</br>
+um den geradigen Pfad zu wählen"
+"-c</br>
+--no-conf",boolean,false,false,"Hiermit wird das Programm</br>
+ohne Berücksichtigung auf die</br>
+conf.json ausgeführt"
+"-a</br>
+--all",boolean,false,false,"Hiermit werden alle Temporären</br>
+Verzeichnisse von Liferay für die</br>
+Säuberung ausgewählt.</br>
+Das hat den gleichen Effekt wie:</br>
+`--c-work`</br>
+`--c-osgi-state`</br>
+`--c-tomcat-temp`</br>
+`--c-tomcat-work`</br>
+zu setzen."
+--no-includes,boolean,false,false,"Hiermit werden wird das Programm</br>
+ohne Berücksichtigung auf die</br>
+'inc-args' von der conf.json</br>
+ausgeführt."
+--c-work,boolean,false,false,"Hiermit wird das '/work'</br>
+Verzeichnis gesäubert."
+--c-osgi-state,boolean,false,false,"Hiermit wird das '/osgi/state'</br>
+Verzeichnis gesäubert."
+--c-tomcat-temp,boolean,false,false,"Hiermit wird das '/tomcat/temp'</br>
+Verzeichnis gesäubert."
+--c-tomcat-work,boolean,false,false,"Hiermit wird das '/tomcat/work'</br>
+Verzeichnis gesäubert."
