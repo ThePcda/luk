@@ -1,7 +1,8 @@
 //(C) Adrian Suslik (klauen ist ehrenlos, aber als Polacke kann ich das verstehen)
 package com.pcda.luk.ltc.command;
 
-import com.pcda.luk.ltc.util.ProjectUtil;
+import com.pcda.luk.ltc.manager.ProjectManager;
+import com.pcda.luk.ltc.manager.UserProgressionManager;
 
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine.Command;
@@ -32,10 +33,17 @@ public final class LtcMainCommand implements Runnable {
     )
     private boolean version;
 
+    @Option(
+        names = {"-p", "--print-progression"}
+    )
+    private boolean printProgression;
+
     @Override
     public void run() {
         if (version) {
-            System.out.println(ProjectUtil.getProjectVersion());
+            System.out.println(ProjectManager.getAttribute("Implementation-Version"));
+        } else if (printProgression) {
+            System.out.println(UserProgressionManager.userProgressionAsString());
         }
     }
 

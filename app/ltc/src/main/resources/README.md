@@ -9,7 +9,7 @@
 - [Getting started](#getting-started)
 
 - [Commands](#commands)
-    - [Clear](#clear)
+    - [Clean](#clean)
     - [Add](#add)
 
 - [Configs](#configs)
@@ -83,9 +83,9 @@ In dieser Anwendung gibt es zurzeit 2 Befehltypen:
 - "clear"
 - "add"
 
-#### Clear
+#### Clean
 
-Mit `clear` kann auf die Hauptfunktion zugegriffen werden, womit ihr eure Verzeichnisse reinigen könnt.
+Mit `clean` kann auf die Hauptfunktion zugegriffen werden, womit ihr eure Verzeichnisse reinigen könnt.
 
 |        Name        |        Type       | Required | Default-Value |                                                                                                                 Description                                                                                                                |
 |:------------------:|:-----------------:|:--------:|:-------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -100,7 +100,7 @@ Mit `clear` kann auf die Hauptfunktion zugegriffen werden, womit ihr eure Verzei
 
 Beispiel ohne Konfigurationen:
 
-`C:\some\where> ltc clear -l C:\Workspaces\ws_obis --c-work --c-tomcat-temp`</br>
+`C:\some\where> ltc clean -l C:\Workspaces\ws_obis --c-work --c-tomcat-temp`</br>
 Dies würde in folgende Verzeichnisse bereinigen:</br>
 `C:\Workspaces\ws_obis\bundles\liferay\work`</br>
 `C:\Workspaces\ws_obis\bundles\liferay\tomcat\temp`

@@ -7,10 +7,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pcda.lib.util.FileUtil;
+//import com.pcda.lib.util.FileUtil;
+import com.pcda.luk.ltc.enums.TargetDirectory2;
+import com.pcda.luk.ltc.manager.WorkspaceConfigManager;
 import com.pcda.luk.ltc.model.DeletionConfig;
 import com.pcda.luk.ltc.model.WorkspaceConfig;
-import com.pcda.luk.ltc.reader.WorkspaceConfigReader;
 import com.pcda.luk.ltc.util.LogUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +20,13 @@ import picocli.CommandLine.Option;
 
 @Slf4j
 @Command(
-    name = "Clear command",
+    name = "Clean command",
     requiredOptionMarker = '*'
 )
-public final class LtcClearCommand implements Runnable {
+public final class LtcCleanCommand implements Runnable {
 
     private static final class InstanceHolder{
-        private static final LtcClearCommand INSTANCE = new LtcClearCommand();
+        private static final LtcCleanCommand INSTANCE = new LtcCleanCommand();
 
         private InstanceHolder() { /* empty constructor */ }
     }
@@ -44,16 +45,16 @@ public final class LtcClearCommand implements Runnable {
     private boolean noConf;
 
     @Option(
-        names = {"-a", "--all"},
-        description = "Set this argument to clear all temp directories"
-    )
-    private boolean clearAll;
-
-    @Option(
         names = {"-i", "--no-includes"},
         description = "Set this argument to ignore the included arguments (inc-args) in conf.json"
     )
     private boolean noIncludes;
+
+    @Option(
+        names = {"-a", "--all"},
+        description = "Set this argument to clear all temp directories"
+    )
+    private boolean clearAll;
 
     @Option(
         names = "--c-work",
@@ -79,14 +80,16 @@ public final class LtcClearCommand implements Runnable {
     )
     private boolean clearTomcatWork;
 
-    private LtcClearCommand() { /* empty constructor */ }
+    private LtcCleanCommand() { /* empty constructor */ }
 
-    public static LtcClearCommand getInstance() {
+    public static LtcCleanCommand getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
     @Override
     public void run() {
+        log.debug("Start running clean command");
+        log.debug("Command status: \n{}", this.toString());
         if (".".equals(location)) {
             location = System.getProperty("user.dir");
         }
@@ -102,11 +105,11 @@ public final class LtcClearCommand implements Runnable {
 
         final WorkspaceConfig workspaceConfig;
         if (!noConf) {
-            WorkspaceConfigReader.read();
+            WorkspaceConfigManager.read();
             final String workspaceName = path.getFileName().toString();
-            if (WorkspaceConfigReader.isWorkspaceConfigPresent(workspaceName)) {
+            if (WorkspaceConfigManager.isWorkspaceConfigPresent(workspaceName)) {
                 log.info("Found configs for: {}", workspaceName);
-                workspaceConfig = WorkspaceConfigReader.getWorkspaceConfig(workspaceName);
+                workspaceConfig = WorkspaceConfigManager.getWorkspaceConfig(workspaceName);
             } else {
                 log.info("Found no configs for: {}", workspaceName);
                 workspaceConfig = WorkspaceConfig.DEFAULT_INSTANCE;
@@ -128,10 +131,30 @@ public final class LtcClearCommand implements Runnable {
         final List<Path> cleanUpPaths = initCleanUpPaths(workspaceConfig);
         log.info("Selected: {} target directories for clean up", cleanUpPaths.size());
         for (final Path cleanUpPath : cleanUpPaths) {
-            log.info("- {}", cleanUpPath.toAbsolutePath().toString());
+            log.info("> {}", cleanUpPath.toAbsolutePath().toString());
         }
         System.out.println();
         executeDeletions(cleanUpPaths);
+        System.out.println();
+        log.debug("Finished running clean command");
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("<(LtcCleanCommand)> \n");
+        strBuilder.append("> location: %s \n");
+        strBuilder.append("> noConf: %b \n");
+        strBuilder.append("> noIncludes: %b \n");
+        strBuilder.append("> clearAll: %b \n");
+        strBuilder.append("> clearWork: %b \n");
+        strBuilder.append("> clearOsgiState: %b \n");
+        strBuilder.append("> clearTomcatTemp: %b \n");
+        strBuilder.append("> clearTomcatWork: %b \n");
+        return String.format(
+            strBuilder.toString(),
+            location, noConf, noIncludes, clearAll, clearWork, clearOsgiState, clearTomcatTemp, clearTomcatWork
+        );
     }
 
     private void applyDeletionConfig(final DeletionConfig deletionConfig) {
@@ -190,13 +213,13 @@ public final class LtcClearCommand implements Runnable {
     private void executeDeletions(final List<Path> cleanUpPaths) {
         final List<Exception> exceptions = new ArrayList<>();
         for (final Path cleanUpPath : cleanUpPaths) {
-            try {
+            /*try {
                 FileUtil.cleanDirectory(cleanUpPath);
                 log.info("FINISHED cleaning up: {}", cleanUpPath.toAbsolutePath().toString());
             } catch (IOException e) {
                 exceptions.add(e);
-                log.error("An error occured please check the logs");
-            }
+                log.error("An error occured for: {}. Please check the logs", cleanUpPath.toAbsolutePath().toString());
+            }*/
         }
         if (!exceptions.isEmpty()) {
             LogUtil.createLogFile(exceptions);

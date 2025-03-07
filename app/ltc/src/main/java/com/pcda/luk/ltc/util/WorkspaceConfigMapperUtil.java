@@ -1,12 +1,12 @@
 //(C) Adrian Suslik (klauen ist ehrenlos, aber als Polacke kann ich das verstehen)
 package com.pcda.luk.ltc.util;
 
+
 import org.json.JSONObject;
 
 import com.pcda.luk.ltc.constant.WorkspaceConfigConstant;
 import com.pcda.luk.ltc.model.DeletionConfig;
 import com.pcda.luk.ltc.model.WorkspaceConfig;
-
 public final class WorkspaceConfigMapperUtil {
 
     private WorkspaceConfigMapperUtil() throws IllegalAccessException {

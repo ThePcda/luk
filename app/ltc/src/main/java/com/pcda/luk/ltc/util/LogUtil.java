@@ -31,7 +31,7 @@ public final class LogUtil {
         }
         Path logFile = logsPath.resolve("ltc" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy-HH.mm.ss")) + ".log");
         try {
-            Files.createDirectories(logFile);
+            Files.createDirectories(logsPath);
         } catch (IOException e) {
             log.error("An error occured while creating a log file. {}", e);
             return;

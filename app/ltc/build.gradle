@@ -15,12 +15,16 @@ dependencies {
     compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombok_version}"
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombok_version}"
 
-    implementation files('../../plugins/pl-1.0.0.jar')
+    //implementation files('../../plugins/pl-1.0.0.jar') -> remove simple logger. May use ch.qos.logback
 
     implementation group: 'org.json', name: 'json', version: "${org_json_version}"
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: "${slf4j_version}"
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: "${slf4j_version}"
     implementation group: 'info.picocli', name: 'picocli', version: "${picocli_version}"
+    implementation group: 'org.reflections', name: 'reflections', version: "${org_reflections}"
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: "${slf4j_version}"
+    //implementation group: 'org.slf4j', name: 'slf4j-simple', version: "${slf4j_version}"
+    implementation group: 'ch.qos.logback', name: 'logback-core', version: "${logback_version}"
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: "${logback_version}"
+    //implementation group: 'org.slf4j', name: 'slf4j-nop', version: "${slf4j_version}"
 
     /*
      _            _
@@ -35,9 +39,11 @@ dependencies {
 
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "${junit_jupiter_version}"
     testImplementation group:'org.junit.jupiter', name: 'junit-jupiter-params', version: "${junit_jupiter_version}"
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-suite-engine', version: "${junit_jupiter_platform_version}"
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "${junit_jupiter_version}"
 
     testImplementation group: 'org.mockito', name: 'mockito-core', version: "${mockito_version}"
+    testImplementation group:'org.mockito', name: 'mockito-junit-jupiter', version: "${mockito_version}"
 }
 
 tasks.named('test') {
@@ -51,16 +57,10 @@ java {
 }
 
 jar {
-    manifest {
-        attributes(
-            'Main-Class': conf.main_class,
-            'Implementation-Version': conf.app_version
-        )
-    }
+    enabled = false
 }
 
 shadowJar {
-    mergeServiceFiles()
     manifest {
         attributes(
             'Main-Class': conf.main_class,
@@ -68,7 +68,7 @@ shadowJar {
         )
     }
     archiveBaseName.set(conf.app_name)
-    archiveVersion.set(conf.app_version)
+    archiveVersion.set('')
     archiveClassifier.set('')
 }
 

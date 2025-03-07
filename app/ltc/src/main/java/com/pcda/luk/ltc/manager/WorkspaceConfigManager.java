@@ -1,5 +1,5 @@
 //(C) Adrian Suslik (klauen ist ehrenlos, aber als Polacke kann ich das verstehen)
-package com.pcda.luk.ltc.reader;
+package com.pcda.luk.ltc.manager;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,19 +15,23 @@ import com.pcda.luk.ltc.util.WorkspaceConfigMapperUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public final class WorkspaceConfigReader {
+public final class WorkspaceConfigManager {
 
     private static final class InstanceHolder {
-        private static final WorkspaceConfigReader INSTANCE = new WorkspaceConfigReader();
+        private static final WorkspaceConfigManager INSTANCE = new WorkspaceConfigManager();
 
         private InstanceHolder() { /* empty constructor */ }
     }
 
     private final Map<String, WorkspaceConfig> workspaceConfigs = new HashMap<>();
 
-    private WorkspaceConfigReader() { /* empty constructor */ }
+    private WorkspaceConfigManager() { /* empty constructor */ }
 
     public static void read() {
+        if (!Files.exists(FileConstant.CONFIG_FILE_PATH) || !Files.isRegularFile(FileConstant.CONFIG_FILE_PATH)) {
+            log.info("No {} file is present", FileConstant.CONFIG_FILE_NAME);
+            return;
+        }
         final String jsonConfigContent;
         try {
             jsonConfigContent = new String(Files.readAllBytes(FileConstant.CONFIG_FILE_PATH));

@@ -18,6 +18,7 @@ task zipArchive(type: Zip) {
         from('src/main/resources') {
             include 'conf.json'
             include 'sample-conf.json'
+            include 'ext.properties'
         }
     }
 
