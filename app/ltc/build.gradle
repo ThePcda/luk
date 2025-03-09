@@ -15,7 +15,7 @@ dependencies {
     compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombok_version}"
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombok_version}"
 
-    //implementation files('../../plugins/pl-1.0.0.jar') -> remove simple logger. May use ch.qos.logback
+    implementation files('../../plugins/pl.jar')
 
     implementation group: 'org.json', name: 'json', version: "${org_json_version}"
     implementation group: 'info.picocli', name: 'picocli', version: "${picocli_version}"

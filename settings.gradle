@@ -11,7 +11,7 @@ if (appDirectory.exists() && appDirectory.isDirectory()) {
         def appSingleDirectoryName = appSingleDirectory.name
         def appSingleDirectoryPath = "$appDirectoryName:$appSingleDirectoryName"
         include appSingleDirectoryPath
-        println green(appSingleDirectoryPath) + " was " + lightBlue("included")
+        println green(appSingleDirectoryPath) + " was " + lightBlue("included") + "\n"
     }
 }
 
