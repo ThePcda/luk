@@ -1,15 +1,16 @@
 //(C) Adrian Suslik (klauen ist ehrenlos, aber als Polacke kann ich das verstehen)
 package com.pcda.luk.ltc.manager;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.reflections.Reflections;
 
 import com.pcda.luk.ltc.contract.LtcCommand;
 
 import lombok.extern.slf4j.Slf4j;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 @Slf4j
@@ -21,20 +22,28 @@ public final class CommandManager {
         private InstanceHolder() { /* empty constructor */ }
     }
 
-    private final Map<Class<?>, LtcCommand> commands = new HashMap<>();
+    private final Map<Class<? extends LtcCommand>, LtcCommand> commands = new HashMap<>();
 
     private CommandManager() { /* empty constructor */ }
 
-    public static void a() {
+    public static void register() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         final Reflections r = new Reflections("com.pcda.luk.ltc");
-        Set<Class<?>> commandClasses = r.getTypesAnnotatedWith(Command.class);
-        for (final Class<?> clazz : commandClasses) {
-            System.out.println(clazz);
+        for (final Class<?> clazz : r.getTypesAnnotatedWith(Command.class)) {
+            InstanceHolder.INSTANCE.commands.put((Class<? extends LtcCommand>) clazz, (LtcCommand) clazz.getConstructor().newInstance());
         }
     }
 
-    public static void register(final Class<?> commandClass, final LtcCommand command) {
-        InstanceHolder.INSTANCE.commands.put(commandClass, command);
+    public static LtcCommand get(final Class<? extends LtcCommand> clazz) {
+        return InstanceHolder.INSTANCE.commands.get(clazz);
+    }
+
+    public static CommandLine initCmd(final Class<? extends LtcCommand> mainCommandClazz) {
+         final Map<Class<?>, LtcCommand> commandsCopy = new HashMap<>(InstanceHolder.INSTANCE.commands);
+         final CommandLine cmd = new CommandLine(commandsCopy.remove(mainCommandClazz));
+         for (final Map.Entry<Class<?>, LtcCommand> entry : commandsCopy.entrySet()) {
+             cmd.addSubcommand(entry.getValue().getClass().getAnnotation(Command.class).name(), entry.getValue());
+         }
+         return cmd;
     }
 
 }

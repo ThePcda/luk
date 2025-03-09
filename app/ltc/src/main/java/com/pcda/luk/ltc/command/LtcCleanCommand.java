@@ -7,8 +7,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.pcda.lib.util.FileUtil;
-import com.pcda.luk.ltc.enums.TargetDirectory2;
+import com.pcda.lib.util.FileUtil;
+import com.pcda.luk.ltc.contract.LtcCommand;
 import com.pcda.luk.ltc.manager.WorkspaceConfigManager;
 import com.pcda.luk.ltc.model.DeletionConfig;
 import com.pcda.luk.ltc.model.WorkspaceConfig;
@@ -20,16 +20,10 @@ import picocli.CommandLine.Option;
 
 @Slf4j
 @Command(
-    name = "Clean command",
+    name = "clean",
     requiredOptionMarker = '*'
 )
-public final class LtcCleanCommand implements Runnable {
-
-    private static final class InstanceHolder{
-        private static final LtcCleanCommand INSTANCE = new LtcCleanCommand();
-
-        private InstanceHolder() { /* empty constructor */ }
-    }
+public final class LtcCleanCommand implements LtcCommand {
 
     @Option(
         names = {"-l", "--location"},
@@ -79,12 +73,6 @@ public final class LtcCleanCommand implements Runnable {
         description = "Set this argument to add the tomcat/work directory for clean up"
     )
     private boolean clearTomcatWork;
-
-    private LtcCleanCommand() { /* empty constructor */ }
-
-    public static LtcCleanCommand getInstance() {
-        return InstanceHolder.INSTANCE;
-    }
 
     @Override
     public void run() {
@@ -213,13 +201,13 @@ public final class LtcCleanCommand implements Runnable {
     private void executeDeletions(final List<Path> cleanUpPaths) {
         final List<Exception> exceptions = new ArrayList<>();
         for (final Path cleanUpPath : cleanUpPaths) {
-            /*try {
+            try {
                 FileUtil.cleanDirectory(cleanUpPath);
                 log.info("FINISHED cleaning up: {}", cleanUpPath.toAbsolutePath().toString());
             } catch (IOException e) {
                 exceptions.add(e);
                 log.error("An error occured for: {}. Please check the logs", cleanUpPath.toAbsolutePath().toString());
-            }*/
+            }
         }
         if (!exceptions.isEmpty()) {
             LogUtil.createLogFile(exceptions);

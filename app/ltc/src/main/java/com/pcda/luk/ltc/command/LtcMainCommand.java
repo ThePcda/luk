@@ -1,6 +1,7 @@
 //(C) Adrian Suslik (klauen ist ehrenlos, aber als Polacke kann ich das verstehen)
 package com.pcda.luk.ltc.command;
 
+import com.pcda.luk.ltc.contract.LtcCommand;
 import com.pcda.luk.ltc.manager.ProjectManager;
 import com.pcda.luk.ltc.manager.UserProgressionManager;
 
@@ -13,19 +14,7 @@ import picocli.CommandLine.Option;
     name = "LTC",
     description = "Your tiny clean up fairy <3"
 )
-public final class LtcMainCommand implements Runnable {
-
-    private final static class InstanceHolder {
-        private static final LtcMainCommand INSTANCE = new LtcMainCommand();
-
-        private InstanceHolder() { /* empty constructor */ }
-    }
-
-    private LtcMainCommand() { /* empty constructor */ }
-
-    public static final LtcMainCommand getInstance() {
-        return InstanceHolder.INSTANCE;
-    }
+public final class LtcMainCommand implements LtcCommand {
 
     @Option(
         names = {"-v", "--version"},
